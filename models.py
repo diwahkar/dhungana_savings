@@ -9,6 +9,12 @@ class Members(SQLModel, table=True):
     name     : str = Field(index=True, unique=True)
 
 
+class MemberPost(SQLModel):
+
+    name     : str = Field(index=True)
+
+
+
 class Loans(SQLModel, table=True):
 
     id             : int | None = Field(primary_key=True) # int | None means we may or may not pass the int value to id duing Member object creation
@@ -16,6 +22,15 @@ class Loans(SQLModel, table=True):
     date_taken     : datetime = Field(default_factory=datetime.now())
     date_returned  : datetime = Field(default=None)
     member_name    : str = Field(foreign_key='members.name')
+
+
+class LoanPost(SQLModel):
+
+    amount         : int | None
+    date_taken     : datetime = Field(default_factory=datetime.now())
+    date_returned  : datetime = Field(default=None)
+    member_name    : str
+
 
 
 class MonthlyAmounts(SQLModel, table=True):
@@ -26,3 +41,12 @@ class MonthlyAmounts(SQLModel, table=True):
     date             : datetime = Field(default=None)
     member_name      : str | None = Field(foreign_key='members.name')
     loan_id          : int | None = Field(default=None, foreign_key='loans.id')
+
+
+class MonthlyAmountPost(SQLModel):
+
+    monthly_saving   : int = Field(default=1000)
+    loan_interest    : int | None = Field(default=None)
+    date             : datetime = Field(default=None)
+    member_name      : str | None
+    loan_id          : int | None
