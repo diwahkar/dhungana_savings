@@ -1,13 +1,12 @@
 from typing import Annotated
 
-from fastapi import FastAPI, Query
+from fastapi import Query
 
+from index import app
 from models import Members, MemberPost
 from sqlmodel import Session, select
 from db_config import engine
 
-
-app = FastAPI()
 
 
 @app.get('/members')
