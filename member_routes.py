@@ -9,7 +9,7 @@ from db_config import engine
 
 
 
-@app.get('/members')
+@app.get('/members', tags=['Members'])
 def get_members(offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     statement = select(Members).offset(offset).limit(limit)
     with Session(engine) as session:
@@ -17,7 +17,7 @@ def get_members(offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     return [member.model_dump() for member in members]
 
 
-@app.get('/members/{member_id}')
+@app.get('/members/{member_id}', tags=['Members'])
 def get_member(member_id: int):
     statement = select(Members).where(Members.id==member_id)
     with Session(engine) as session:
@@ -28,7 +28,7 @@ def get_member(member_id: int):
         return member.model_dump()
 
 
-@app.post('/members')
+@app.post('/members', tags=['Members'])
 def create_member(requestBody: MemberPost):
     requestBody = requestBody.model_dump()
     member = Members(name=requestBody['name'])
@@ -39,7 +39,7 @@ def create_member(requestBody: MemberPost):
     return member.id
 
 
-@app.put('/members/{member_id}')
+@app.put('/members/{member_id}', tags=['Members'])
 def upate_member(member_id: int, member_update: MemberPost):
     statement = select(Members).where(Members.id==member_id)
     with Session(engine) as session:
@@ -58,7 +58,7 @@ def upate_member(member_id: int, member_update: MemberPost):
         return member.id
 
 
-@app.delete('/members/{member_id}')
+@app.delete('/members/{member_id}', tags=['Members'])
 def delete_member(member_id: int):
     statement = select(Members).where(Members.id==member_id)
     with Session(engine) as session:
