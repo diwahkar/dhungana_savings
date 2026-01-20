@@ -3,8 +3,6 @@ from dotenv import load_dotenv
 
 from sqlmodel import SQLModel, create_engine
 
-import models
-
 
 load_dotenv()
 
