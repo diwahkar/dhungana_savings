@@ -9,7 +9,7 @@ from db_config import engine
 
 
 
-@app.get('/monthlyamounts')
+@app.get('/monthlyamounts', tags=['Monthly Amount'])
 def get_monthlyamounts(offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     statement = select(MonthlyAmounts).offset(offset).limit(limit)
     with Session(engine) as session:
@@ -17,7 +17,7 @@ def get_monthlyamounts(offset: int = 0, limit: Annotated[int, Query(le=100)] = 1
     return [monthlyamount.model_dump() for monthlyamount in monthlyamounts]
 
 
-@app.get('/monthlyamounts/{monthlyamount_id}')
+@app.get('/monthlyamounts/{monthlyamount_id}', tags=['Monthly Amount'])
 def get_monthlyamount(monthlyamount_id: int):
     statement = select(MonthlyAmounts).where(MonthlyAmounts.id==monthlyamount_id)
     with Session(engine) as session:
@@ -28,7 +28,7 @@ def get_monthlyamount(monthlyamount_id: int):
         return monthlyamount.model_dump()
 
 
-@app.post('/monthlyamounts')
+@app.post('/monthlyamounts', tags=['Monthly Amount'])
 def create_monthlyamount(requestBody: MonthlyAmountPost):
     requestBody = requestBody.model_dump()
     monthlyamount = MonthlyAmounts()
@@ -43,7 +43,7 @@ def create_monthlyamount(requestBody: MonthlyAmountPost):
     return monthlyamount.id
 
 
-@app.put('/monthlyamounts/{monthlyamount_id}')
+@app.put('/monthlyamounts/{monthlyamount_id}', tags=['Monthly Amount'])
 def update_monthlyamount(monthlyamount_id: int, reqeustBody: MonthlyAmountPost):
     statement = select(MonthlyAmounts).where(MonthlyAmounts.id==monthlyamount_id)
     with Session(engine) as session:
@@ -62,7 +62,7 @@ def update_monthlyamount(monthlyamount_id: int, reqeustBody: MonthlyAmountPost):
         return monthlyamount.id
 
 
-@app.delete('/monthlyamounts/{monthlyamount_id}')
+@app.delete('/monthlyamounts/{monthlyamount_id}', tags=['Monthly Amount'])
 def delete_monthlyamount(monthlyamount_id: int):
     statement = select(MonthlyAmounts).where(MonthlyAmounts.id==monthlyamount_id)
     with Session(engine) as session:
@@ -75,7 +75,7 @@ def delete_monthlyamount(monthlyamount_id: int):
         return 'monthlyamount Deleted'
 
 
-@app.get('/monthlyamounts/username/{username}')
+@app.get('/monthlyamounts/username/{username}', tags=['Monthly Amount'])
 def get_monthlyamounts_by_username(username: str, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     statement = select(MonthlyAmounts).where(MonthlyAmounts.member_name==username)
     with Session(engine) as session:
