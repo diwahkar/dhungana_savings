@@ -9,7 +9,7 @@ from db_config import engine
 
 
 
-@app.get('/Loans')
+@app.get('/Loans', tags=['Loans'])
 def get_Loans(offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     statement = select(Loans).offset(offset).limit(limit)
     with Session(engine) as session:
@@ -17,7 +17,7 @@ def get_Loans(offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     return [loan.model_dump() for loan in loans]
 
 
-@app.get('/Loans/{loan_id}')
+@app.get('/Loans/{loan_id}', tags=['Loans'])
 def get_loan(loan_id: int):
     statement = select(Loans).where(Loans.id==loan_id)
     with Session(engine) as session:
@@ -28,7 +28,7 @@ def get_loan(loan_id: int):
         return loan.model_dump()
 
 
-@app.post('/Loans')
+@app.post('/Loans', tags=['Loans'])
 def create_loan(requestBody: LoanPost):
     requestBody = requestBody.model_dump()
     loan = Loans()
@@ -43,7 +43,7 @@ def create_loan(requestBody: LoanPost):
     return loan.id
 
 
-@app.put('/Loans/{loan_id}')
+@app.put('/Loans/{loan_id}', tags=['Loans'])
 def update_loan(loan_id: int, reqeustBody: LoanPost):
     statement = select(Loans).where(Loans.id==loan_id)
     with Session(engine) as session:
@@ -62,7 +62,7 @@ def update_loan(loan_id: int, reqeustBody: LoanPost):
         return loan.id
 
 
-@app.delete('/Loans/{loan_id}')
+@app.delete('/Loans/{loan_id}', tags=['Loans'])
 def delete_loan(loan_id: int):
     statement = select(Loans).where(Loans.id==loan_id)
     with Session(engine) as session:
@@ -75,7 +75,7 @@ def delete_loan(loan_id: int):
         return 'loan Deleted'
 
 
-@app.get('/Loans/username/{username}')
+@app.get('/Loans/username/{username}', tags=['Loans'])
 def get_loan_by_username(username: str, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     statement = select(Loans).where(Loans.member_name==username)
     with Session(engine) as session:
